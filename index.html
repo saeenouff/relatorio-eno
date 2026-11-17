@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relatório Semestral – Estágio Não Obrigatório</title>
+<style>
+  :root{
+    --azul:#0b3d6e; --azul-claro:#e8f0f8; --texto:#1f2933; --suave:#5b6773;
+    --borda:#cfd8e3; --ok:#1e7a46; --alerta:#a15c00; --erro:#b42318; --fundo:#f5f7fa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--texto);background:var(--fundo);line-height:1.5;font-size:16px}
+  header{background:var(--azul);color:#fff;padding:20px 16px 16px}
+  header .inst{font-size:13px;opacity:.85;margin:0}
+  header h1{font-size:21px;margin:4px 0 0;line-height:1.25}
+  .progresso{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--borda);padding:8px 16px}
+  .barra{height:8px;background:#e3e8ee;border-radius:99px;overflow:hidden}
+  .barra span{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+  .progresso small{color:var(--suave);font-size:13px}
+  main{max-width:760px;margin:0 auto;padding:16px}
+  .aviso{background:#fff;border-left:4px solid var(--azul);padding:12px 14px;border-radius:8px;margin-bottom:16px;font-size:15px}
+  .aviso.lgpd{border-left-color:var(--ok)}
+  .aviso.sigilo{border-left-color:var(--alerta)}
+  .aviso p{margin:6px 0}
+  section.card{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:16px;margin-bottom:16px}
+  section.card h2{font-size:18px;margin:0 0 4px;color:var(--azul)}
+  section.card > p.desc{margin:0 0 12px;color:var(--suave);font-size:14px}
+  label{display:block;font-weight:600;margin:14px 0 4px;font-size:15px}
+  label .opc{font-weight:400;color:var(--suave);font-size:13px}
+  input,select,textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--borda);border-radius:8px;background:#fff;color:var(--texto)}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--azul);outline-offset:1px;border-color:var(--azul)}
+  textarea{min-height:130px;resize:vertical}
+  .linha{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+  @media (max-width:520px){.linha{grid-template-columns:1fr}}
+  .bloco{border-top:1px dashed var(--borda);margin-top:14px;padding-top:2px}
+  .bloco:first-of-type{border-top:none}
+  .contador{font-size:14px;color:var(--suave);text-align:left;margin-top:4px}
+  .contador.curto{color:var(--alerta)} .contador.bom{color:var(--ok)}
+  details.ajuda{background:var(--azul-claro);border-radius:8px;padding:8px 12px;margin:8px 0 12px;font-size:14px}
+  details.ajuda summary{cursor:pointer;font-weight:600;color:var(--azul)}
+  details.ajuda ul{margin:6px 0 4px;padding-left:20px}
+  details.ajuda .ex{background:#fff;border-radius:6px;padding:8px 10px;margin:8px 0 4px;font-style:italic}
+  .invalido{border-color:var(--erro)!important;background:#fff6f5}
+  .msgerro{color:var(--erro);font-size:13px;margin-top:2px;display:none}
+  .invalido + .msgerro, .invalido ~ .msgerro{display:block}
+  .acoes{display:flex;flex-direction:column;gap:10px;margin:20px 0 40px}
+  button{font:inherit;font-size:17px;font-weight:600;padding:14px;border-radius:10px;border:none;cursor:pointer}
+  .primario{background:var(--azul);color:#fff}
+  .secundario{background:#fff;color:var(--azul);border:1px solid var(--azul)}
+  .terciario{background:transparent;color:var(--suave);font-size:15px;font-weight:500;text-decoration:underline}
+  #resumoErros{display:none;background:#fff6f5;border:1px solid var(--erro);color:var(--erro);border-radius:8px;padding:10px 12px;font-size:14px}
+  #pronto{display:none;background:#eefaf2;border:1px solid var(--ok);border-radius:8px;padding:12px;font-size:15px}
+  footer{text-align:center;font-size:12px;color:var(--suave);padding:0 16px 30px}
+</style>
+</head>
+<body>
+<header>
+  <p class="inst">Universidade Federal Fluminense · Instituto de Psicologia · SPA · SAE/ENO</p>
+  <h1>Relatório Semestral de Estágio Não Obrigatório</h1>
+</header>
+
+<div class="progresso" aria-live="polite">
+  <div class="barra"><span id="barra"></span></div>
+  <small id="txtProgresso">0 de 0 campos obrigatórios preenchidos</small>
+</div>
+
+<main>
+  <div class="aviso">
+    <p><strong>Como funciona:</strong> preencha os campos abaixo. Cada pergunta tem um botão <em>“Precisa de ajuda?”</em> com perguntas-guia e um exemplo. Ao final, toque em <strong>Gerar PDF</strong> e o arquivo será salvo no seu celular ou computador.</p>
+  </div>
+  <div class="aviso lgpd">
+    <p><strong>Seus dados ficam só com você.</strong> Esta página não envia, não grava e não guarda nada em servidor ou na nuvem. O PDF é montado no próprio aparelho. Se você fechar ou recarregar a página antes de gerar o PDF, o texto será perdido. Para textos longos, vale escrever antes no bloco de notas e colar aqui.</p>
+  </div>
+  <div class="aviso sigilo">
+    <p><strong>Sigilo profissional:</strong> não escreva nomes, iniciais, idade exata ou detalhes que permitam identificar pacientes, usuários ou colegas atendidos. Descreva as situações de forma genérica (ex.: “em um atendimento a um adolescente encaminhado pela escola”).</p>
+  </div>
+
+  <form id="form" novalidate autocomplete="off">
+    <!-- 1. IDENTIFICAÇÃO -->
+    <section class="card">
+      <h2>1. Identificação</h2>
+      <p class="desc">Dados básicos do estágio.</p>
+
+      <label for="aluno">Nome completo do(a) estagiário(a)</label>
+      <input id="aluno" required autocomplete="off">
+      <div class="msgerro">Informe seu nome completo.</div>
+
+      <label for="semestre">Semestre de referência</label>
+      <input id="semestre" required inputmode="decimal" placeholder="Ex.: 2026.2" maxlength="6">
+      <details class="ajuda">
+        <summary>O que colocar aqui?</summary>
+        <p>Informe o semestre a que este relatório se refere, ou seja, o período de estágio que você está relatando. Use o formato <strong>ano.semestre</strong>:</p>
+        <ul>
+          <li><strong>2026.1</strong> para o 1º semestre de 2026</li>
+          <li><strong>2026.2</strong> para o 2º semestre de 2026</li>
+        </ul>
+        <p>Se o relatório for sobre o semestre que acabou de terminar, use esse semestre, e não o que está começando.</p>
+      </details>
+      <div class="msgerro">Use o formato ano.semestre, por exemplo 2026.2.</div>
+
+      <label for="local">Local do estágio (instituição/setor)</label>
+      <input id="local" required placeholder="Ex.: Hospital X, Setor de Psicologia">
+      <div class="msgerro">Informe o local do estágio.</div>
+
+    </section>
+
+    <!-- 2. ÁREA E CARGA HORÁRIA -->
+    <section class="card">
+      <h2>2. Área e carga horária</h2>
+
+      <label for="area">Área da Psicologia em que o estágio se insere</label>
+      <select id="area" required>
+        <option value="">Selecione…</option>
+        <option>Psicologia Clínica</option>
+        <option>Psicologia da Saúde / Hospitalar</option>
+        <option>Psicologia Escolar e Educacional</option>
+        <option>Psicologia Organizacional e do Trabalho</option>
+        <option>Psicologia Social e Comunitária</option>
+        <option>Psicologia Jurídica</option>
+        <option>Avaliação Psicológica</option>
+        <option>Neuropsicologia</option>
+        <option>Psicologia do Esporte</option>
+        <option>Psicologia do Trânsito</option>
+        <option>Pesquisa em Psicologia</option>
+        <option value="Outra">Outra (especificar)</option>
+      </select>
+      <div class="msgerro">Escolha a área.</div>
+      <div id="areaOutraBox" style="display:none">
+        <label for="areaOutra">Qual área?</label>
+        <input id="areaOutra">
+        <div class="msgerro">Especifique a área.</div>
+      </div>
+
+      <div class="linha">
+        <div>
+          <label for="inicio">Início do período</label>
+          <input id="inicio" type="date" required>
+          <div class="msgerro">Informe a data de início.</div>
+        </div>
+        <div>
+          <label for="fim">Fim do período</label>
+          <input id="fim" type="date" required>
+          <div class="msgerro">Informe a data de término.</div>
+        </div>
+      </div>
+      <label for="chSemanal">Carga horária semanal (h)</label>
+      <input id="chSemanal" type="number" min="1" max="40" inputmode="numeric" required style="max-width:180px">
+      <div class="msgerro">Informe as horas semanais do estágio.</div>
+      <p class="contador" id="chDica" style="font-size:13px"></p>
+    </section>
+
+    <!-- 3. APRENDIZADOS -->
+    <section class="card">
+      <h2>3. Três aprendizados do semestre</h2>
+      <p class="desc">Pense no que você sabe fazer ou compreender hoje e que não sabia antes do estágio. Escreva a partir de 2 linhas para cada aprendizado. Se quiser, pode escrever mais.</p>
+
+      <details class="ajuda">
+        <summary>Precisa de ajuda? Veja as perguntas-guia</summary>
+        <ul>
+          <li><strong>O que</strong> eu aprendi? (uma habilidade, um conceito, uma postura)</li>
+          <li><strong>Em que situação</strong> isso aconteceu? (descreva sem identificar ninguém)</li>
+          <li><strong>Como</strong> esse aprendizado se relaciona com o que estudei no curso?</li>
+          <li><strong>Por que</strong> ele é importante para minha formação como psicólogo(a)?</li>
+        </ul>
+        <p>Algumas fontes de ideia: acolhimento e escuta, escrita de documentos, trabalho em equipe multiprofissional, ética e sigilo, manejo de situações difíceis, uso de instrumentos, funcionamento da instituição e da rede.</p>
+        <div class="ex">Exemplo: “Aprendi a conduzir uma entrevista de acolhimento de forma mais estruturada. Nas primeiras semanas eu acompanhava a supervisora e depois passei a conduzir parte da entrevista com a supervisão dela. Percebi como as perguntas abertas, que estudei em Técnicas de Entrevista, ajudam a pessoa a trazer a demanda com as próprias palavras. Isso me deu mais segurança para o primeiro contato com quem chega ao serviço.”</div>
+      </details>
+
+      <div class="bloco">
+        <label for="apr1">Aprendizado 1</label>
+        <textarea id="apr1" required data-min="60" data-tipo="apr"></textarea>
+        <div class="contador" data-for="apr1"></div>
+        <div class="msgerro">Escreva pelo menos 2 linhas.</div>
+      </div>
+      <div class="bloco">
+        <label for="apr2">Aprendizado 2</label>
+        <textarea id="apr2" required data-min="60" data-tipo="apr"></textarea>
+        <div class="contador" data-for="apr2"></div>
+        <div class="msgerro">Escreva pelo menos 2 linhas.</div>
+      </div>
+      <div class="bloco">
+        <label for="apr3">Aprendizado 3</label>
+        <textarea id="apr3" required data-min="60" data-tipo="apr"></textarea>
+        <div class="contador" data-for="apr3"></div>
+        <div class="msgerro">Escreva pelo menos 2 linhas.</div>
+      </div>
+    </section>
+
+    <!-- 4. MELHORIAS -->
+    <section class="card">
+      <h2>4. Três pontos que poderiam melhorar</h2>
+      <p class="desc">Podem envolver a sua própria atuação, a organização do estágio, a supervisão, a estrutura do local ou o acompanhamento pela universidade. Escreva a partir de 2 linhas para cada ponto. Se quiser, pode escrever mais.</p>
+
+      <details class="ajuda">
+        <summary>Precisa de ajuda? Veja as perguntas-guia</summary>
+        <ul>
+          <li><strong>O que</strong> dificultou meu aprendizado ou minha atuação?</li>
+          <li><strong>Qual o efeito</strong> disso no dia a dia do estágio?</li>
+          <li><strong>O que eu sugiro</strong> para melhorar? (algo concreto e possível)</li>
+          <li>Também vale olhar para si: o que <strong>eu</strong> posso fazer diferente no próximo semestre?</li>
+        </ul>
+        <p>Escreva com respeito e foco na situação, sem citar nomes de pessoas.</p>
+        <div class="ex">Exemplo: “Os horários de supervisão mudaram várias vezes ao longo do semestre, o que fez algumas dúvidas sobre os atendimentos ficarem acumuladas. Sugiro que o horário seja combinado no início do semestre e que exista um canal para dúvidas pontuais entre as supervisões.”</div>
+        <div class="ex">Exemplo sobre a própria atuação: “Percebi que demorava a registrar as atividades no prontuário e acabava esquecendo detalhes. No próximo semestre quero reservar os 15 minutos finais do turno para os registros.”</div>
+      </details>
+
+      <div class="bloco">
+        <label for="mel1">Ponto de melhoria 1</label>
+        <textarea id="mel1" required data-min="60" data-tipo="mel"></textarea>
+        <div class="contador" data-for="mel1"></div>
+        <div class="msgerro">Escreva pelo menos 2 linhas.</div>
+      </div>
+      <div class="bloco">
+        <label for="mel2">Ponto de melhoria 2</label>
+        <textarea id="mel2" required data-min="60" data-tipo="mel"></textarea>
+        <div class="contador" data-for="mel2"></div>
+        <div class="msgerro">Escreva pelo menos 2 linhas.</div>
+      </div>
+      <div class="bloco">
+        <label for="mel3">Ponto de melhoria 3</label>
+        <textarea id="mel3" required data-min="60" data-tipo="mel"></textarea>
+        <div class="contador" data-for="mel3"></div>
+        <div class="msgerro">Escreva pelo menos 2 linhas.</div>
+      </div>
+    </section>
+
+    <!-- 5. COMENTÁRIOS -->
+    <section class="card">
+      <h2>5. Comentários finais <span class="opc" style="font-size:14px;font-weight:400;color:var(--suave)">(opcional)</span></h2>
+      <textarea id="comentarios" placeholder="Algo mais que você queira registrar sobre o semestre."></textarea>
+    </section>
+
+    <div id="resumoErros" role="alert"></div>
+    <div id="pronto" role="status"></div>
+
+    <div class="acoes">
+      <button type="submit" class="primario">Gerar PDF e salvar</button>
+      <button type="button" class="terciario" id="limpar">Apagar tudo e recomeçar</button>
+    </div>
+  </form>
+</main>
+<footer>Formulário sem armazenamento de dados · o PDF é gerado no seu aparelho</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const form = $('form');
+
+  // Semestre: formata enquanto digita (20262 -> 2026.2)
+  const sem = $('semestre');
+  sem.addEventListener('input', () => {
+    const d = sem.value.replace(/\D/g,'').slice(0,5);
+    sem.value = d.length > 4 ? d.slice(0,4) + '.' + d.slice(4) : d;
+  });
+
+  // Área "outra"
+  $('area').addEventListener('change', e => {
+    const outra = e.target.value === 'Outra';
+    $('areaOutraBox').style.display = outra ? 'block' : 'none';
+    $('areaOutra').required = outra;
+    atualizar();
+  });
+
+  // Contadores
+  const DICAS = {
+    apr: [
+      'O que você aprendeu?',
+      'Continue, escreva pelo menos 2 linhas.',
+      'Ótimo! Se quiser, conte em que situação isso aconteceu.',
+      'Muito bom! Se quiser, diga por que isso é importante para sua formação.',
+      'Excelente, seu relato está bem completo.'
+    ],
+    mel: [
+      'O que poderia ser melhor?',
+      'Continue, escreva pelo menos 2 linhas.',
+      'Ótimo! Se quiser, sugira uma forma de melhorar.',
+      'Muito bom! Se quiser, conte como isso afetou o seu dia a dia no estágio.',
+      'Excelente, seu relato está bem completo.'
+    ]
+  };
+  function contar(t){
+    const c = document.querySelector('.contador[data-for="'+t.id+'"]'); if(!c) return;
+    const n = t.value.trim().length, min = +t.dataset.min, d = DICAS[t.dataset.tipo];
+    let i, cls;
+    if (n === 0) { i = 0; cls = ''; }
+    else if (n < min) { i = 1; cls = 'curto'; }
+    else if (n < 180) { i = 2; cls = 'bom'; }
+    else if (n < 350) { i = 3; cls = 'bom'; }
+    else { i = 4; cls = 'bom'; }
+    c.textContent = (n >= min ? '✓ ' : '') + d[i];
+    c.className = 'contador ' + cls;
+  }
+
+  // Dica de carga horária
+  function dicaCH(){
+    const s = +$('chSemanal').value, d = $('chDica');
+    if (s > 30) { d.textContent = 'Atenção: a Lei do Estágio (11.788/2008) limita o estágio a 30 horas semanais no ensino superior.'; d.className='contador curto'; }
+    else d.textContent = '';
+  }
+
+  function valido(el){
+    if (!el.required) return true;
+    const v = el.value.trim();
+    if (!v) return false;
+    if (el.dataset.min && v.length < +el.dataset.min) return false;
+    if (el.id === 'semestre' && !/^20\d{2}\.[12]$/.test(v)) return false;
+    if (el.id === 'fim' && $('inicio').value && v < $('inicio').value) return false;
+    return true;
+  }
+  function campos(){ return [...form.querySelectorAll('input,select,textarea')].filter(e => e.required); }
+
+  function atualizar(){
+    const cs = campos(), ok = cs.filter(valido).length;
+    $('barra').style.width = (cs.length ? ok/cs.length*100 : 0) + '%';
+    $('txtProgresso').textContent = ok + ' de ' + cs.length + ' campos obrigatórios preenchidos';
+  }
+
+  form.addEventListener('input', e => {
+    if (e.target.tagName === 'TEXTAREA') contar(e.target);
+    if (e.target.classList.contains('invalido') && valido(e.target)) e.target.classList.remove('invalido');
+    if (['chSemanal','inicio','fim'].includes(e.target.id)) dicaCH();
+    $('pronto').style.display = 'none';
+    atualizar();
+  });
+  form.querySelectorAll('textarea[data-min]').forEach(contar);
+  atualizar();
+
+  // Aviso ao sair com dados
+  window.addEventListener('beforeunload', e => {
+    const temDados = [...form.querySelectorAll('input:not([type=date]),textarea')].some(x => x.value.trim());
+    if (temDados) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  let limparArmado = null;
+  $('limpar').addEventListener('click', () => {
+    const btn = $('limpar');
+    if (!limparArmado) {
+      btn.textContent = 'Toque de novo para confirmar: apagar todo o texto';
+      btn.style.color = 'var(--erro)';
+      limparArmado = setTimeout(() => { limparArmado = null; btn.textContent = 'Apagar tudo e recomeçar'; btn.style.color = ''; }, 4000);
+      return;
+    }
+    clearTimeout(limparArmado); limparArmado = null;
+    btn.textContent = 'Apagar tudo e recomeçar'; btn.style.color = '';
+    form.reset(); $('areaOutraBox').style.display='none'; $('areaOutra').required = false;
+    form.querySelectorAll('.invalido').forEach(x=>x.classList.remove('invalido'));
+    form.querySelectorAll('textarea[data-min]').forEach(contar); dicaCH(); atualizar();
+    $('resumoErros').style.display='none'; $('pronto').style.display='none';
+    window.scrollTo(0,0);
+  });
+
+  // Salvamento: dentro do claude.ai usa a capacidade "downloads"; em qualquer outro site, download direto
+  let downloadsNS = null;
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('downloads').then(ns => { downloadsNS = ns; }).catch(() => {});
+  }
+
+  // ---------- PDF ----------
+  // Normaliza para o conjunto de caracteres das fontes padrão do PDF
+  function limpa(s){
+    return (s || '').replace(/[‘’‚′]/g,"'").replace(/[“”„″]/g,'"')
+      .replace(/[–—−]/g,'-').replace(/…/g,'...').replace(/[•●]/g,'-')
+      .replace(/ /g,' ').replace(/\r/g,'')
+      .normalize('NFC').replace(/[^\n\x20-\x7E -ÿ]/g,'').trim();
+  }
+  function dataBR(v){ if(!v) return ''; const [a,m,d] = v.split('-'); return d+'/'+m+'/'+a; }
+
+  function gerarPDF(){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit:'mm', format:'a4' });
+    const W = 210, M = 20, L = W - 2*M, H = 297, RODAPE = 280;
+    let y = 0;
+    const azul = [11,61,110];
+
+    function cabecalho(){
+      doc.setFillColor(...azul); doc.rect(0,0,W,4,'F');
+      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(90);
+      doc.text('Universidade Federal Fluminense - Instituto de Psicologia', M, 12);
+      doc.text('Serviço de Psicologia Aplicada (SPA) - SAE/ENO', M, 16.5);
+      doc.setTextColor(0);
+      y = 26;
+    }
+    function quebra(h){ if (y + h > RODAPE) { const fs = doc.getFontSize(), ff = doc.getFont(); doc.addPage(); cabecalho(); doc.setFontSize(fs); doc.setFont(ff.fontName, ff.fontStyle); } }
+    function titulo(t){
+      quebra(14);
+      doc.setFont('helvetica','bold'); doc.setFontSize(11.5); doc.setTextColor(...azul);
+      doc.text(t, M, y); y += 1.8;
+      doc.setDrawColor(...azul); doc.setLineWidth(0.4); doc.line(M, y, W-M, y);
+      doc.setTextColor(0); y += 6;
+    }
+    function campo(rot, val){
+      doc.setFontSize(10);
+      doc.setFont('helvetica','bold'); const wr = doc.getTextWidth(rot + ': ');
+      const linhas = doc.splitTextToSize(limpa(val) || '-', L - wr);
+      quebra(linhas.length * 5 + 1);
+      doc.text(rot + ':', M, y);
+      doc.setFont('helvetica','normal'); doc.text(linhas, M + wr, y);
+      y += linhas.length * 5 + 1.5;
+    }
+    function paragrafo(rot, val){
+      doc.setFontSize(10.5);
+      doc.setFont('helvetica','bold'); quebra(12); doc.text(rot, M, y); y += 5.5;
+      doc.setFont('helvetica','normal');
+      const partes = limpa(val).split(/\n+/);
+      partes.forEach((p, i) => {
+        const linhas = doc.splitTextToSize(p, L);
+        linhas.forEach(l => { quebra(5.5); doc.text(l, M, y, { maxWidth: L, align: 'justify' }); y += 5.3; });
+        if (i < partes.length - 1) y += 1.5;
+      });
+      y += 4;
+    }
+
+    const v = id => $(id).value;
+    const area = v('area') === 'Outra' ? v('areaOutra') : v('area');
+
+    cabecalho();
+    doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(...azul);
+    doc.text('Relatório Semestral de Estágio Não Obrigatório', W/2, y, { align:'center' }); y += 6.5;
+    doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(60);
+    doc.text('Semestre ' + v('semestre'), W/2, y, { align:'center' }); doc.setTextColor(0); y += 10;
+
+    titulo('1. Identificação');
+    campo('Estagiário(a)', v('aluno'));
+    campo('Local do estágio', v('local'));
+    y += 3;
+
+    titulo('2. Área e carga horária');
+    campo('Área da Psicologia', area);
+    campo('Período', dataBR(v('inicio')) + ' a ' + dataBR(v('fim')));
+    campo('Carga horária semanal', v('chSemanal') + ' h');
+    y += 3;
+
+    titulo('3. Aprendizados do semestre');
+    paragrafo('Aprendizado 1', v('apr1'));
+    paragrafo('Aprendizado 2', v('apr2'));
+    paragrafo('Aprendizado 3', v('apr3'));
+
+    titulo('4. Pontos que poderiam melhorar');
+    paragrafo('Ponto 1', v('mel1'));
+    paragrafo('Ponto 2', v('mel2'));
+    paragrafo('Ponto 3', v('mel3'));
+
+    if (v('comentarios').trim()) { titulo('5. Comentários finais'); paragrafo('', v('comentarios')); }
+
+    // Assinaturas
+    const blocoAss = 46;
+    if (y + blocoAss > RODAPE) { doc.addPage(); cabecalho(); }
+    y += 4;
+    doc.setFontSize(10); doc.setFont('helvetica','normal');
+    doc.text('Local e data: ________________________________, ____/____/________', M, y); y += 20;
+    const col = (L - 10) / 2;
+    function ass(x, nome, papel){
+      doc.setDrawColor(0); doc.setLineWidth(0.3); doc.line(x, y, x + col, y);
+      doc.setFontSize(9.5); doc.setFont('helvetica','bold');
+      if (nome) doc.text(doc.splitTextToSize(limpa(nome), col)[0], x + col/2, y + 4.5, { align:'center' });
+      doc.setFont('helvetica','normal'); doc.text(papel, x + col/2, y + 9, { align:'center' });
+    }
+    ass(M, v('aluno'), 'Estagiário(a)');
+    ass(M + col + 10, '', 'Supervisor(a)');
+
+    // Rodapé com paginação
+    const n = doc.getNumberOfPages();
+    for (let i = 1; i <= n; i++) {
+      doc.setPage(i); doc.setFontSize(8); doc.setTextColor(120);
+      doc.text('Relatório Semestral ENO - ' + limpa(v('aluno')) + ' - ' + v('semestre'), M, H - 10);
+      doc.text('Página ' + i + ' de ' + n, W - M, H - 10, { align:'right' });
+    }
+
+    const nomeArq = 'Relatorio_Semestral_ENO_' + v('semestre').replace('.','-') + '_' +
+      limpa(v('aluno')).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_|_$/g,'') + '.pdf';
+    return { doc, nomeArq };
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const inval = campos().filter(x => !valido(x));
+    form.querySelectorAll('.invalido').forEach(x=>x.classList.remove('invalido'));
+    if (inval.length) {
+      inval.forEach(x => x.classList.add('invalido'));
+      const r = $('resumoErros');
+      r.textContent = 'Faltam ' + inval.length + ' campo(s) para completar. Eles estão destacados em vermelho.';
+      r.style.display = 'block';
+      inval[0].scrollIntoView({ behavior:'smooth', block:'center' });
+      setTimeout(() => inval[0].focus({ preventScroll:true }), 400);
+      return;
+    }
+    $('resumoErros').style.display = 'none';
+    const p = $('pronto');
+    const msgOk = nome => '<strong>PDF gerado:</strong> ' + nome + '<br>Procure o arquivo na pasta <em>Downloads</em> (Android/computador) ou em <em>Arquivos › Downloads</em> (iPhone). No iPhone, se o PDF abrir na tela, toque em <em>Compartilhar › Salvar em Arquivos</em>. Depois, envie o PDF pelo canal indicado pela coordenação do estágio.';
+    let r;
+    try { r = gerarPDF(); }
+    catch (err) { p.innerHTML = 'Não foi possível gerar o PDF neste navegador. Tente pelo Chrome ou Safari atualizados.'; p.style.display='block'; return; }
+    const mostrar = html => { p.innerHTML = html; p.style.display = 'block'; p.scrollIntoView({ behavior:'smooth', block:'center' }); };
+    if (downloadsNS) {
+      downloadsNS.save({ filename: r.nomeArq, data: r.doc.output('blob') })
+        .then(() => mostrar(msgOk(r.nomeArq)))
+        .catch(e => mostrar(e && e.code === 'declined'
+          ? 'O salvamento foi cancelado. Toque em <strong>Gerar PDF e salvar</strong> de novo quando quiser.'
+          : 'Não foi possível salvar aqui. Tente abrir o formulário em outro navegador.'));
+    } else {
+      try { r.doc.save(r.nomeArq); mostrar(msgOk(r.nomeArq)); }
+      catch (e) { mostrar('Não foi possível salvar o PDF neste navegador. Tente pelo Chrome ou Safari atualizados.'); }
+    }
+  });
+})();
+</script>
+</body>
+</html>

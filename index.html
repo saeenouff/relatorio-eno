@@ -370,17 +370,34 @@
   function gerarPDF(){
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit:'mm', format:'a4' });
-    const W = 210, M = 20, L = W - 2*M, H = 297, RODAPE = 280;
+    const W = 210, M = 20, L = W - 2*M, H = 297, RODAPE = 272;
+    const BRASAO = 'data:image/jpeg;base64,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';
+    const ouro = [212,160,23];
     let y = 0;
     const azul = [11,61,110];
 
     function cabecalho(){
-      doc.setFillColor(...azul); doc.rect(0,0,W,4,'F');
-      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(90);
-      doc.text('Universidade Federal Fluminense - Instituto de Psicologia', M, 12);
-      doc.text('Serviço de Psicologia Aplicada (SPA) - SAE/ENO', M, 16.5);
+      // páginas seguintes: cabeçalho discreto, como no guia
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(110);
+      doc.text('SPA/IPS · UFF · RELATÓRIO SEMESTRAL DE ESTÁGIO NÃO OBRIGATÓRIO', M, 14, { charSpace: 0.2 });
+      doc.setTextColor(...azul);
+      doc.text('SEMESTRE ' + $('semestre').value, W - M, 14, { align:'right', charSpace: 0.2 });
+      doc.setDrawColor(215); doc.setLineWidth(0.3); doc.line(M, 17, W - M, 17);
       doc.setTextColor(0);
-      y = 26;
+      y = 27;
+    }
+    function cabecalhoInicial(){
+      const bw = 19, bh = bw * 191 / 170;
+      doc.addImage(BRASAO, 'JPEG', (W - bw)/2, 12, bw, bh);
+      let yy = 12 + bh + 6;
+      doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...azul);
+      doc.text('Universidade Federal Fluminense', W/2, yy, { align:'center' }); yy += 4.8;
+      doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(70);
+      doc.text('Instituto de Psicologia', W/2, yy, { align:'center' }); yy += 4.5;
+      doc.text('Serviço de Psicologia Aplicada - SPA', W/2, yy, { align:'center' }); yy += 4;
+      doc.setDrawColor(...ouro); doc.setLineWidth(0.7); doc.line(W/2 - 7, yy, W/2 + 7, yy);
+      doc.setTextColor(0);
+      y = yy + 11;
     }
     function quebra(h){ if (y + h > RODAPE) { const fs = doc.getFontSize(), ff = doc.getFont(); doc.addPage(); cabecalho(); doc.setFontSize(fs); doc.setFont(ff.fontName, ff.fontStyle); } }
     function titulo(t){
@@ -415,7 +432,7 @@
     const v = id => $(id).value;
     const area = v('area') === 'Outra' ? v('areaOutra') : v('area');
 
-    cabecalho();
+    cabecalhoInicial();
     doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(...azul);
     doc.text('Relatório Semestral de Estágio Não Obrigatório', W/2, y, { align:'center' }); y += 6.5;
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(60);
@@ -444,29 +461,30 @@
 
     if (v('comentarios').trim()) { titulo('5. Comentários finais'); paragrafo('', v('comentarios')); }
 
-    // Assinaturas
-    const blocoAss = 46;
+    // Assinatura do(a) estagiário(a)
+    const blocoAss = 42;
     if (y + blocoAss > RODAPE) { doc.addPage(); cabecalho(); }
     y += 4;
     doc.setFontSize(10); doc.setFont('helvetica','normal');
-    doc.text('Local e data: ________________________________, ____/____/________', M, y); y += 20;
-    const col = (L - 10) / 2;
-    function ass(x, nome, papel){
-      doc.setDrawColor(0); doc.setLineWidth(0.3); doc.line(x, y, x + col, y);
-      doc.setFontSize(9.5); doc.setFont('helvetica','bold');
-      if (nome) doc.text(doc.splitTextToSize(limpa(nome), col)[0], x + col/2, y + 4.5, { align:'center' });
-      doc.setFont('helvetica','normal'); doc.text(papel, x + col/2, y + 9, { align:'center' });
-    }
-    ass(M, v('aluno'), 'Estagiário(a)');
-    ass(M + col + 10, '', 'Supervisor(a)');
+    doc.text('Local e data: ________________________________, ____/____/________', M, y); y += 22;
+    const col = 85, xa = (W - col) / 2;
+    doc.setDrawColor(0); doc.setLineWidth(0.3); doc.line(xa, y, xa + col, y);
+    doc.setFontSize(9.5); doc.setFont('helvetica','bold');
+    doc.text(doc.splitTextToSize(limpa(v('aluno')), col)[0], W/2, y + 4.5, { align:'center' });
+    doc.setFont('helvetica','normal'); doc.text('Estagiário(a)', W/2, y + 9, { align:'center' });
 
-    // Rodapé com paginação
+    // Rodapé, no modelo do Guia do SPA
     const n = doc.getNumberOfPages();
     for (let i = 1; i <= n; i++) {
-      doc.setPage(i); doc.setFontSize(8); doc.setTextColor(120);
-      doc.text('Relatório Semestral ENO - ' + limpa(v('aluno')) + ' - ' + v('semestre'), M, H - 10);
-      doc.text('Página ' + i + ' de ' + n, W - M, H - 10, { align:'right' });
+      doc.setPage(i);
+      doc.setDrawColor(215); doc.setLineWidth(0.3); doc.line(M, H - 19, W - M, H - 19);
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(110);
+      doc.text('Relatório Semestral de Estágio Não Obrigatório · SPA/IPS - UFF Niterói', M, H - 14.5);
+      doc.text('Página ' + i + ' de ' + n, W - M, H - 14.5, { align:'right' });
+      doc.setFontSize(6.8); doc.setTextColor(140);
+      doc.text('SPA-UFF - Campus do Gragoatá, Rua Prof. Marcos Waldemar de Freitas Reis, s/n, Bloco N, 5º andar, Niterói - RJ', W/2, H - 9.5, { align:'center' });
     }
+    doc.setTextColor(0);
 
     const nomeArq = 'Relatorio_Semestral_ENO_' + v('semestre').replace('.','-') + '_' +
       limpa(v('aluno')).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_|_$/g,'') + '.pdf';
